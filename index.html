@@ -9,7 +9,7 @@
 <title>Share The other Stark</title>
 <meta name="description" content="One tap to share The other Stark: quiet tools you own.">
 <link rel="canonical" href="https://starkforall.com/other/">
-<meta name="theme-color" content="#08090a">
+<meta name="theme-color" content="#000000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Stark">
 <meta property="og:title" content="The other Stark">
@@ -19,39 +19,48 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A pair of eyes in low light above the words: The other Stark. Quiet tools you own.">
+<meta property="og:image:alt" content="STARK, a wordmark in pale capitals on black.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The other Stark">
 <meta name="twitter:description" content="Everyone's searching Stark. We're the other one. Tools you own: pay once, works offline.">
 <meta name="twitter:image" content="https://starkforall.com/other/img/cover-1200x630.jpg">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
-<script src="share.js" defer></script>
 </head>
 <body>
 <main>
 <header>
-<img class="poster" src="img/poster.jpg" width="540" height="960" alt="A pair of calm eyes in low light. Caption: Everyone's searching Stark.">
-<div><p class="kicker">STARK</p><h1>The other Stark</h1><p class="sub">One tap. Pick a message, then send it.</p></div>
+<p class="wm">STARK</p>
+<div class="line" aria-hidden="true"></div>
+<h1 id="title">The other Stark</h1>
+<p class="sub" id="sub">One tap. Pick a message, then send it.</p>
+<img class="frame only-o" src="img/frame.jpg" width="720" height="150" alt="A frame from the video: We're the other one.">
 </header>
-<button class="go" id="go" type="button" disabled>Share The other Stark</button>
+<button class="go" id="go" type="button" disabled><span class="go-t" id="go-t">Share The other Stark</span><span class="go-s" id="go-s">Video, message and link</span></button>
 <p class="status" id="status" role="status" aria-live="polite">Loading...</p>
 <section aria-labelledby="mh">
-<h2 id="mh">Message <span class="hint">(swipe or tap 1 to 4)</span></h2>
+<h2 id="mh">Message <span class="hint">swipe or tap 1 to 5</span></h2>
 <div class="msgs" id="msgs" tabindex="0" aria-label="Message choices, swipe sideways">
-<article class="msg" data-i="0"><p>Everyone's searching Stark. We're the other one. No suits of armour. Just tools you own: pay once, works offline, your data stays yours. https://starkforall.com/the-other-stark/</p></article>
-<article class="msg" data-i="1"><p>Quiet, private tools you own. Pay once, works offline, and your data stays on your computer. Try them free in your browser, nothing to install: https://starkforall.com/the-other-stark/</p></article>
-<article class="msg" data-i="2"><p>Scam calls, lost family papers, monthly fees, data leaving your home. The other Stark makes calm tools for ordinary trouble: no account, no cloud, nothing uploaded. Try one free: https://starkforall.com/the-other-stark/</p></article>
-<article class="msg" data-i="3"><p>Made by one of the broken, for everyone who has been last. The last shall be first. Tools you own: pay once, works offline, your data stays yours. https://starkforall.com/the-other-stark/</p></article>
+<article class="msg" data-m="o"><p>Everyone's searching Stark. We're the other one. No suits of armour. Just tools you own: pay once, works offline, your data stays yours. https://starkforall.com/the-other-stark/</p></article>
+<article class="msg" data-m="o"><p>Quiet, private tools you own. Pay once, works offline, and your data stays on your computer. Try them free in your browser, nothing to install: https://starkforall.com/the-other-stark/</p></article>
+<article class="msg" data-m="o"><p>Scam calls, lost family papers, monthly fees, data leaving your home. The other Stark makes calm tools for ordinary trouble: no account, no cloud, nothing uploaded. Try one free: https://starkforall.com/the-other-stark/</p></article>
+<article class="msg" data-m="o"><p>Made by one of the broken, for everyone who has been last. The last shall be first. Tools you own: pay once, works offline, your data stays yours. https://starkforall.com/the-other-stark/</p></article>
+<article class="msg" data-m="o"><p>Apex Protocol: cultivate creation, never overcome it. Ten apps run with the plug pulled, cannot read your data, ask for no account. Check the file. https://starkforall.com/apex/</p></article>
+<article class="msg" data-m="s"><p>Pull the plug. It still works. Ten Stark apps run offline, cannot read your data, ask for no account. Try them free: https://starkforall.com/try/</p></article>
+<article class="msg" data-m="s"><p>Pull the plug. It still works. Quiet tools you own: pay once, works offline, and your data stays on your computer. https://starkforall.com/</p></article>
+<article class="msg" data-m="s"><p>Pull the plug. It still works. Try one free in your browser, nothing to install, or see everything Stark makes: https://starkforall.com/try/ https://starkforall.com/</p></article>
+<article class="msg" data-m="s"><p>Scam calls, lost family papers, monthly fees, data leaving your home. Stark makes calm tools for ordinary trouble: no account, no cloud, nothing uploaded. Try one free: https://starkforall.com/try/</p></article>
+<article class="msg" data-m="s"><p>Apex Protocol: cultivate creation, never overcome it. Ten apps run with the plug pulled, cannot read your data, ask for no account. Check the file. https://starkforall.com/apex/</p></article>
 </div>
 <div class="tabs" id="tabs" role="group" aria-label="Choose a message"></div>
 </section>
 <section aria-labelledby="ah">
 <h2 id="ah">Or open an app with it filled in</h2>
 <ul class="apps" id="apps"></ul>
-<p class="save"><a class="btn" href="other-stark.mp4" download="The-other-Stark.mp4">Save the video</a></p>
+<p class="save only-o"><a class="btn" href="other-stark.mp4" download="The-other-Stark.mp4">Save the video</a></p>
 </section>
 </main>
-<footer><p>Made by Stark. <a href="https://starkforall.com/the-other-stark/">starkforall.com/the-other-stark</a></p></footer>
+<footer><p class="wm small">STARK</p><p id="foot">Made by Stark. <a href="https://starkforall.com/the-other-stark/">starkforall.com/the-other-stark</a></p></footer>
+<script src="share.js"></script>
 </body>
 </html>

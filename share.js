@@ -1,33 +1,54 @@
 (function () {
   'use strict';
-  var URL_ = 'https://starkforall.com/the-other-stark/';
   var VIDEO = 'other-stark.mp4';
+  var site = /(^|[?&])site(=|&|$)/.test(location.search);
   var go = document.getElementById('go');
   var statusEl = document.getElementById('status');
   var msgsEl = document.getElementById('msgs');
   var tabsEl = document.getElementById('tabs');
   var appsEl = document.getElementById('apps');
-  var cards = Array.prototype.slice.call(msgsEl.querySelectorAll('.msg'));
+  var TITLE = site ? 'Stark' : 'The other Stark';
   var cur = 0;
   var file = null;
   var filePromise = null;
+  var cards;
+
+  function byId(id) { return document.getElementById(id); }
+  function setText(id, t) { var e = byId(id); if (e) e.textContent = t; }
+
+  // One page, two modes. Default: The other Stark (with the video). ?site: the whole site, no video.
+  var mode = site ? 's' : 'o';
+  Array.prototype.slice.call(msgsEl.querySelectorAll('.msg')).forEach(function (c) {
+    if (c.getAttribute('data-m') !== mode) c.parentNode.removeChild(c);
+  });
+  cards = Array.prototype.slice.call(msgsEl.querySelectorAll('.msg'));
+  if (site) {
+    Array.prototype.slice.call(document.querySelectorAll('.only-o')).forEach(function (e) { e.parentNode.removeChild(e); });
+    document.title = 'Share Stark';
+    setText('title', 'Pull the plug.');
+    setText('sub', 'It still works. One tap, then send it.');
+    setText('go-t', 'Share Stark');
+    setText('go-s', 'Message and link');
+    byId('foot').innerHTML = 'Made by Stark. <a href="https://starkforall.com/">starkforall.com</a>';
+  }
 
   function say(m) { statusEl.textContent = m; }
   function msg() { return cards[cur].textContent.replace(/\s+/g, ' ').trim(); }
-  function body() { var m = msg(); return m.split(URL_).join('').trim(); }
+  function firstUrl() { var m = msg().match(/https?:\/\/[^\s]+/); return m ? m[0] : 'https://starkforall.com/'; }
+  function body() { return msg().replace(/\s*https?:\/\/[^\s]+/g, '').replace(/\s+/g, ' ').replace(/[:\s]+$/, ''); }
   function enc(s) { return encodeURIComponent(s); }
 
   var apps = [
     ['Messages', function (m) { return 'sms:?&body=' + enc(m); }],
     ['WhatsApp', function (m) { return 'https://wa.me/?text=' + enc(m); }],
     ['X', function (m) { return 'https://twitter.com/intent/tweet?text=' + enc(m); }],
-    ['Facebook', function (m) { return 'https://www.facebook.com/sharer/sharer.php?u=' + enc(URL_) + '&quote=' + enc(body()); }],
+    ['Facebook', function (m) { return 'https://www.facebook.com/sharer/sharer.php?u=' + enc(firstUrl()) + '&quote=' + enc(body()); }],
     ['LinkedIn', function (m) { return 'https://www.linkedin.com/feed/?shareActive=true&text=' + enc(m); }],
-    ['Reddit', function (m) { return 'https://www.reddit.com/submit?url=' + enc(URL_) + '&title=' + enc(body().slice(0, 290)); }],
+    ['Reddit', function (m) { return 'https://www.reddit.com/submit?url=' + enc(firstUrl()) + '&title=' + enc(body().slice(0, 290)); }],
     ['Bluesky', function (m) { return 'https://bsky.app/intent/compose?text=' + enc(m); }],
-    ['Telegram', function (m) { return 'https://t.me/share/url?url=' + enc(URL_) + '&text=' + enc(body()); }],
+    ['Telegram', function (m) { return 'https://t.me/share/url?url=' + enc(firstUrl()) + '&text=' + enc(body()); }],
     ['Threads', function (m) { return 'https://www.threads.net/intent/post?text=' + enc(m); }],
-    ['Email', function (m) { return 'mailto:?subject=' + enc('The other Stark') + '&body=' + enc(m); }]
+    ['Email', function (m) { return 'mailto:?subject=' + enc(TITLE) + '&body=' + enc(m); }]
   ];
   var links = [];
   apps.forEach(function (a) {
@@ -75,6 +96,10 @@
     if (e.key === 'ArrowRight' && cur < cards.length - 1) { select(cur + 1, true); e.preventDefault(); }
     if (e.key === 'ArrowLeft' && cur > 0) { select(cur - 1, true); e.preventDefault(); }
   });
+  document.addEventListener('keydown', function (e) {
+    var n = /^[1-9]$/.test(e.key) ? +e.key : 0;
+    if (n && n <= cards.length && !e.ctrlKey && !e.metaKey && !e.altKey) select(n - 1, true);
+  });
 
   function copy() {
     var m = msg();
@@ -86,6 +111,7 @@
   cb.addEventListener('click', copy);
 
   function loadFile() {
+    if (site) return Promise.resolve(null);
     if (!filePromise) {
       filePromise = fetch(VIDEO).then(function (r) {
         if (!r.ok) throw new Error('video');
@@ -101,8 +127,8 @@
   function doShare() {
     var m = msg();
     var withFile = file && navigator.canShare && navigator.canShare({ files: [file] });
-    var data = withFile ? { files: [file], text: m } : { text: body(), url: URL_ };
-    if (withFile) data.title = 'The other Stark';
+    var data = withFile ? { files: [file], text: m } : { text: body(), url: firstUrl() };
+    if (withFile || site) data.title = TITLE;
     return navigator.share(data).catch(function (e) {
       if (e && e.name === 'AbortError') return;
       return copy();
@@ -111,13 +137,13 @@
 
   go.addEventListener('click', function () {
     if (!navigator.share) { copy(); return; }
-    if (file) { doShare(); return; }
+    if (file || site) { doShare(); return; }
     go.disabled = true; say('Getting the video...');
     loadFile().then(function () { go.disabled = false; say(''); return doShare(); });
   });
 
   select(0, false);
   go.disabled = false;
-  say(navigator.share ? 'Tap to share the video and message.' : 'Sharing is not available here: pick an app below or copy the message.');
+  say(navigator.share ? (site ? 'Tap to share the message and link.' : 'Tap to share the video and message.') : 'Sharing is not available here: pick an app below or copy the message.');
   loadFile();
 })();
