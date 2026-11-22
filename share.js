@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  var VIDEO = 'other-stark.mp4';
+  var VIDEO = 'other-stark.mp4?v=20261122b';
   var site = /(^|[?&])site(=|&|$)/.test(location.search);
   var go = document.getElementById('go');
   var statusEl = document.getElementById('status');
